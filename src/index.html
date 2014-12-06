@@ -1,0 +1,153 @@
+<html>
+    <head>
+        <title>Angie's List Scala Challenges</title>
+        <style>
+            .code {
+                font-family: "Lucida Console", Monaco, monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Angie's List Scala Challenges</h1>
+
+        <p>This project contains a series of Scala challenges that will allow you to demonstrate your skill level with Scala. <strong>All the problems are optional.</strong> Complete as many as you can.</p>
+        <p>The project is littered with opportunities for you to demonstrate higher degrees of technical skill. <strong>This is your opportunity to wow us!</strong></p>
+        <p>You will be graded on:</p>
+        <p><strong>(listed in order of importance)</strong></p>
+        <ul>
+            <li>Correctness - your implementation works</li>
+            <li>DRY-ness - your implementation employs appropriate ammounts of abstration to avoid repetition of code</li>
+            <li>Expressiveness - your implementation conveys the way it works clearly</li>
+            <li>Elegance - your implementation has a certain je ne sais quoi</li>
+            <li><strong>Bonus:</strong> Using &quot;a Functional Approach&quot; - immutability, referential transparency, usage of the right higher-order functions</li>
+            <li><strong>Bonus:</strong> Tests - scala-test is included in the build, writing tests is always appreciated<br/>
+                <strong>Super-Duper Bonus:</strong> Functional Testing - using a property-based testing approach (by adding ScalaCheck to sbt and using the test framework)</li>
+            <li><strong>Bonus:</strong> Type Design - designing types/type constructors to support logical use cases and improve correctness</li>
+        </ul>
+        <p>You will <strong>NOT</strong> be graded on:</p>
+        <ul>
+            <li>Doing everything in one line or expression</li>
+            <li>Time taken for completion</li>
+        </ul>
+        <p><strong>IMPORTANT NOTE:</strong> Some of these problems are <strong>HARD</strong> or expect strong Functional Programming skills. Admiting you don't know the answer or skipping that problem doesn't automatically exclude you from being considered.</p>
+
+        <h2>Instructions</h2>
+        <p>Once you complete the challenges, please submit the following:</p>
+        <ul>
+            <li>Organize the code in a sensible manner</li>
+            <li>This directory zipped up (remember to remove the <span class="code">target</span> directory)</li>
+            <li>A text file:</li>
+            <ul>
+                <li>At the top, provide how long it took to complete</li>
+                <li>With solutions and/or notes for any of the challenges</li>
+                <li>If you chose to skip an exercise, explain why</li>
+            </ul>
+        </ul>
+
+        <h2>Challenges</h2>
+
+        <h3>1: Fibonacci</h3>
+        <p>The fibonacci sequence is like so: <span class="code">1, 1, 2, 3, 5, 8, 13, 21, ...</span></p>
+        <p>It is defined as follows:</p>
+        <ul>
+            <li class="code">fibonacci(1) = 1</li>
+            <li class="code">fibonacci(2) = 1</li>
+            <li class="code">fibonacci(n) = fibonacci(n - 1) + fibonacci(n - 2)</li>
+        </ul>
+        <p>Tasks:</p>
+        <ol>
+            <li>Implement a function <span class="code">fibonacci(n: Int): BigInt</span> naively</li>
+            <li>What resources does your implementation of the naive function waste?</li>
+            <li>Implement <span class="code">fibonacci(n)</span> with <span class="code">BigO(n)</span>. Call it <span class="code">fibonacci2</span></li>
+            <li>There is Scala collection that is well suited to solving this problem.</li>
+        </ol>
+
+        <h3>2: Balancing Parentheses &amp; Brackets</h3>
+        <p>The given input of brackets and parentheses input is considered balanced when:</p>
+        <ul>
+            <li>It is empty <strong>OR</strong></li>
+            <li>The content inside all pairs of corresponding parentheses/brackets is balanced</li>
+        </ul>
+        <p>Here are some examples:</p>
+        <ul>
+            <li class="code">isEverythingBalanced("") == true</li>
+            <li class="code">isEverythingBalanced("([{}])") == true</li>
+            <li class="code">isEverythingBalanced("[]([{}[]()])") == true</li>
+            <li class="code">isEverythingBalanced("[") == false</li>
+            <li class="code">isEverythingBalanced("}") == false</li>
+            <li class="code">isEverythingBalanced("({)}") == false</li>
+            <li class="code">isEverythingBalanced("}{") == false</li>
+            <li class="code">isEverythingBalanced("){") == false</li>
+        </ul>
+        <p>Tasks:</p>
+        <ol>
+            <li>Implement a function <span class="code">isEverythingBalanced(text: String): Boolean</span> using any approach<br/>
+                <strong>NOTE: A solution that uses regular expressions is considered <em>INCORRECT</em>.</strong></li>
+            <li><strong>Bonus:</strong> Implement it recursively and immutably</li>
+            <li><strong>Bonus:</strong> Implement it non-recursively and immutably; call it <span class="code">isEverythingBalancedAlt</span></li>
+        </ol>
+
+        <h3>3: Object Oriented Programming</h3>
+        <p>Design an object <strong>model</strong> (a set of interfaces) for Poker. Do not implement the game. The purpose of the model is to fascilitate an online Poker game system.</p>
+        <p>Food for thought:</p>
+        <ul>
+            <li>How should game entities be represented?</li>
+            <li>How should game semantics be represented?</li>
+            <li>Can the type system help us enforce a higher degree of correctness?</li>
+            <li>How can your model prevent abuse/fraud/errors?</li>
+            <li>Decide how much of the problem you want to model</li>
+            <li>HINT: Take a progressive approach. We want a cohesive model; not necessarily an all-encompassingly complete one</li>
+        </ul>
+        <p><strong>Alternative:</strong> If you're not familiar or comfortable with Poker, you can model another problem of your choosing. Be sure to choose a complex enough and well scoped problem. With your domain, include the aim of your modeling. In the case of Poker, we want the model to help drive an online poker engine.</p>
+        <p>Tasks:</p>
+        <ol>
+            <li>Create the necessary classes and traits</li>
+            <li>You're welcome to implement some things here, but it's not required</li>
+            <li><strong>Bonus:</strong> where would you use implicit features of Scala to make this implementation better?</li>
+            <li><strong>Bonus:</strong> discuss the issues with using implicit features of Scala?</li>
+        </ol>
+
+        <h3>4: Data Structures</h3>
+        <p>Design a "last recently used cache" with the following properties:</p>
+        <ul>
+            <li>a constructor that takes the recently used cache size <span class="code">fastCacheSize: Int</span></li>
+            <li>a retrieval method: <span class="code">def get(key: K): Option[V]</span></li>
+            <li>an update method: <span class="code">def put(key: K, value: V): Unit</span></li>
+            <li>the cache <strong>will not</strong> evict entries - this means that it grows unboundedly</li>
+            <li>BigO(1) <span class="code">get</span> of the <span class="code">fastCacheSize</span> recently used keys; <span class="code">BigO(fastCacheSize) == BigO(1)</span></li>
+            <li>BigO(log n) <span class="code">get</span> of any key</li>
+            <li>BigO(log n) <span class="code">put</span> of any key</li>
+        </ul>
+
+        <h3>5: Functional Programming Practice</h3>
+        <p>Implement a list with the below methods.</p>
+        <p>Food for thought:</p>
+        <ul>
+            <li>Use immutable data structures.</li>
+            <li>Structural sharing is a MUST.</li>
+        </ul>
+        <p>Tasks:</p>
+        <ol>
+            <li>Implement a recursive version of:</li>
+            <ul>
+                <li><span class="code">map</span> in <span class="code">MyList</span></li>
+                <li><span class="code">filter</span> in <span class="code">MyList</span></li>
+                <li><span class="code">zip</span> in <span class="code">MyList</span></li>
+                <li><span class="code">foldLeft</span> in <span class="code">MyList</span></li>
+                <li><span class="code">distinct</span> in <span class="code">MyList</span></li>
+                <li><span class="code">groupBy</span> in <span class="code">MyList</span></li>
+            </ul>
+            <li><strong>Bonus:</strong> Make them tail-recursive in <span class="code">TRMyList</span> where possible</li>
+            <li><strong>Bonus:</strong> Implement ONLY <span class="code">foldLeft</span> recursively in <span class="code">FLMyList</span>; implement other methods in terms of <span class="code">foldLeft</span> where possible</li>
+            <li><strong>Super-Duper Bonus:</strong> BigO(1) append and prepend (when amortized)</li>
+        </ol>
+
+        <h3>6: Functional Programming Theory</h3>
+        <p>Questions:</p>
+        <ol>
+            <li>What makes a function pure? Give examples</li>
+            <li>What is referential transparency? What are its benefits?</li>
+            <li>How does a functional program deal with side-effects?</li>
+        </ol>
+    </body>
+</html>
