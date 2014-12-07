@@ -2,6 +2,7 @@ package com.example.alriddle.question1
 
 /**
  * Created by hmbadiwe on 12/6/14.
+ * 3 implementations of the fibonacci algorithm.
  */
 
 import scala.annotation.tailrec
@@ -12,6 +13,7 @@ object FibonacciAlgo {
    *
    */
   private val fibonacciStream : Stream[BigInt] = BigInt(0) #:: BigInt(1) #::fibonacciStream.zip( fibonacciStream.tail ).map{ z => z._1 + z._2}
+
   private def defaultWrapAroundBadIndex( index: Int )( fn: (Int) => BigInt ): BigInt = {
     require( index >= 0, "argument to Fibonacci generator should be greater than or equal to zero" )
     fn( index )
