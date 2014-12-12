@@ -14,29 +14,42 @@ class TestLRUCache extends FlatSpec with ShouldMatchers {
        }
   }
   it should "properly store and retrieve objects even within a cache with no lru" in {
-    val cache = new LRUCache[String,String](0)
-    cache.put("Hopes", "Dreams")
-    cache.put("Leno", "Letterman")
-    cache.put("Celtics", "Lakers")
+    val lRUCache = new LRUCache[String,String](0)
+    lRUCache.put("Hopes", "Dreams")
+    lRUCache.put("Leno", "Letterman")
+    lRUCache.put("Celtics", "Lakers")
 
-    cache.get("Hopes") shouldBe Some("Dreams")
-    cache.get("Leno") shouldBe Some("Letterman")
-    cache.get("Celtics") shouldBe Some("Lakers")
-    cache.get("Raspberries") shouldBe None
+    lRUCache.get("Hopes") shouldBe Some("Dreams")
+    lRUCache.get("Leno") shouldBe Some("Letterman")
+    lRUCache.get("Celtics") shouldBe Some("Lakers")
+    lRUCache.get("Raspberries") shouldBe None
   }
 
   it should "properly store and retrieve objects even within a cache with an lru " in {
-    val cache = new LRUCache[String,String](2)
-    cache.put("Hopes", "Dreams")
-    cache.cacheSize shouldBe 1
-    cache.bulkSize shouldBe 0
+    val lRUCache = new LRUCache[String,String](2)
+    lRUCache.put("Hopes", "Dreams")
+    lRUCache.cacheSize shouldBe 1
+    lRUCache.bulkSize shouldBe 0
 
-    cache.put("Leno", "Letterman")
-    cache.put("Celtics", "Lakers")
-    cache.cacheSize shouldBe 2
-    cache.bulkSize shouldBe 1
+    lRUCache.put("Leno", "Letterman")
+    lRUCache.put("Celtics", "Lakers")
+    lRUCache.cacheSize shouldBe 2
+    lRUCache.bulkSize shouldBe 1
 
 
+  }
+  it should "move data from bulk to cache " in {
+    val lRUCache = new LRUCache[String,String](2)
+    lRUCache.put("Hopes", "Dreams")
+    lRUCache.put("Leno", "Letterman")
+    lRUCache.put("Celtics", "Lakers")
+    lRUCache.cacheSize shouldBe 2
+    lRUCache.bulkSize shouldBe 1
+
+    lRUCache.get("Hopes") shouldBe Some("Dreams")
+    lRUCache.cacheSize shouldBe 2
+    lRUCache.bulkStore.get("Hopes") shouldBe null
+    lRUCache.cache.get("Leno") shouldBe null
 
 
   }

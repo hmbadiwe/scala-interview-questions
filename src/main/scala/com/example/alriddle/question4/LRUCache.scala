@@ -25,7 +25,7 @@ class LRUCache[K,V]( fastCacheSize : Int ) {
           Option(bulkStore.get(key))
         } match {
           case None => None
-          case Some(x) => cache.put( key, x); Some(x)
+          case Some(x) => cache.put( key, x); bulkStore.remove(key); Some(x)
         }
   }
   def put( key : K, value : V ) = cache.put( key, value )
