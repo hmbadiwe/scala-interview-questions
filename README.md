@@ -181,13 +181,14 @@ Example:<br/>
 ```
 <br/>
 ```
-    refTranspFunc("My name ", "is Henry", (x:String,y:String) => (x+y )
+    refTranspFunc("My name ", "is Henry", (x:String,y:String) => (x+y))
 ```
 
 <br/>
 *In the above function, if a, b and anotherReferentiallyTransparentFunction are all referentially transparent,*</br>
 *refTranspFunc is also referentially transparent.* <br/>
-*Referentially Rransparency is achieved if the functions do not modify state outside their scope as well as enforcing immutability in data structures.*
+*Referentially Rransparency is achieved if the functions do not modify state outside their scope as well as enforcing immutability in data structures.*<br/>
+* String addition is referentially transparent.*
 
 How does a functional program deal with side-effects?
 
