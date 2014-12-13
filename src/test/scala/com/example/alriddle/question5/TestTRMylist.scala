@@ -5,45 +5,38 @@ import org.scalatest.{ShouldMatchers, FlatSpec}
 /**
  * Created by hmbadiwe on 12/12/14.
  */
-class TestTRMylist extends FlatSpec with ShouldMatchers {
+class TestTRMylist extends FlatSpec with ShouldMatchers with TRMyListTestData{
      behavior of "TRMyList"
   it should "retrieve the size of the list" in {
-    val myStringList : TRMyList[String] = TRMyList("My", "Name", "Is", "...")
     myStringList.size shouldBe 4
   }
   it should "support retrieval of elements of the same type" in {
-    val myStringList : TRMyList[String] = TRMyList("My", "Name", "Is", "...")
     myStringList.get(0) shouldBe Some("My")
     myStringList.get(1) shouldBe Some("Name")
     myStringList.get(6) shouldBe None
   }
   it should "support the ability to convert to a list"  in {
-    val myStringList : TRMyList[String] = TRMyList("My", "Name", "Is", "...")
     myStringList.toList should contain inOrderOnly ( "My", "Name", "Is", "...")
   }
 
   it should "support reversal of elements in the list" in {
-    val myIntList : TRMyList[Int] = TRMyList(100, 101, 102, 103 );
     val reverseIntList = myIntList.reverse
     reverseIntList.get(0) shouldBe Some(103)
     reverseIntList.get(3) shouldBe Some(100)
   }
   it should "support prepending of elements to the list" in {
-    val myIntList : TRMyList[Int] = TRMyList(100, 101, 102);
     val prependedIntList = myIntList prepend  99
     prependedIntList.get(0) shouldBe Some(99)
 
   }
   it should "support appending of elements to the list" in {
-    val myIntList : TRMyList[Int] = TRMyList(100, 101, 102);
-    val appendedList = myIntList append  103
-    appendedList.get(3) shouldBe Some(103)
+    val appendedList = myIntList append  104
+    appendedList.get(4) shouldBe Some(104)
 
   }
   it should "support map operations" in {
-    val myIntList : TRMyList[Int] = TRMyList(100, 101, 102);
     val myStringTupleIntList = myIntList.map{ x => (x, x.toString)}
-    myStringTupleIntList.get(1) shouldBe Some((101,"101"))
+    myStringTupleIntList.toList should contain inOrder ((100, "100"),(101, "101"),(102, "102"),(103, "103"))
   }
   it should "support filter operations" in {
     val nameYearsInLeagueTupleList = TRMyList(("Johnny Football", 1), ("RG III", 1), ("Megatron", 8))
@@ -63,7 +56,6 @@ class TestTRMylist extends FlatSpec with ShouldMatchers {
     myIntList.foldLeft(0){(accum,elem) => accum + elem } shouldBe 303
   }
   it should "support the groupby operation" in {
-    val nameYearsInLeagueTupleList = TRMyList(("Johnny Football", 1), ("RG III", 1), ("Megatron", 8), ("Beast Mode", 8))
     val groupedPlayers = nameYearsInLeagueTupleList.groupBy{ x => if( x._2 == 1 ) "Rookie" else "Veteran"}
     groupedPlayers.size shouldBe 2
     val optionalRookies = groupedPlayers.get("Rookie")
@@ -82,10 +74,24 @@ class TestTRMylist extends FlatSpec with ShouldMatchers {
 
   }
   it should "support the zip operation" in {
-    val nameYearsInLeagueTupleList = TRMyList("Johnny Football", "RG III", "Megatron", "Beast Mode")
-    val zippedNameYears = nameYearsInLeagueTupleList.zip( TRMyList(1,1,8,8) )
-    zippedNameYears.size shouldBe 4
-    zippedNameYears.toList should contain inOrderOnly (("Johnny Football", 1), ("RG III", 1), ("Megatron", 8), ("Beast Mode", 8))
 
+
+    val overFlowzippedNameYears = nameYearsInLeagueTupleList.zip( TRMyList(1,2,3,4,5,6) )
+    overFlowzippedNameYears.size shouldBe 4
+    overFlowzippedNameYears.toList should contain inOrderOnly ((("Johnny Football", 1) ,1), (("RG III", 1),2), (("Megatron", 8),3), (("Beast Mode", 8),4))
+
+    val smallZippedNameYears = nameYearsInLeagueTupleList.zip( TRMyList(1,2) )
+    smallZippedNameYears.size shouldBe 2
+    smallZippedNameYears.toList should contain inOrderOnly ((("Johnny Football", 1) ,1), (("RG III", 1), 2))
+
+
+    val emptyList = nameYearsInLeagueTupleList.zip( TRMyList.empty[String] )
+    emptyList.size shouldBe 0
+
+  }
+
+  it should "support the take operation" in {
+    nameYearsInLeagueTupleList.take(2).toList should contain inOrderOnly (("Johnny Football", 1), ("RG III", 1))
+    nameYearsInLeagueTupleList.take(10).toList should contain inOrderOnly (("Johnny Football", 1), ("RG III", 1), ("Megatron", 8), ("Beast Mode", 8))
   }
 }

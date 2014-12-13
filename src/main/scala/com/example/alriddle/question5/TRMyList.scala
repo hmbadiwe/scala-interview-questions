@@ -24,7 +24,7 @@ sealed trait TRMyList[+T]{
             foldLeftHelp( fnResult, optionNode.get.nextNode )
         }
     }
-    foldLeftHelp( accum, reverse.head  )
+    foldLeftHelp( accum, head  )
   }
   def get( index : Int) : Option[T] = {
     require( index >= 0 )
@@ -46,7 +46,7 @@ sealed trait TRMyList[+T]{
   def prepend[U >: T]( value : U) : TRMyList[U] = TRMyList(Some(MyNode(value, head)))
 
   def toList : List[T] = {
-    foldLeft(List.empty[T]){ (accum, elem) => elem :: accum}
+    foldLeft(List.empty[T]){ (accum, elem) => elem :: accum}.reverse
   }
 
   def map[U]( fn : T => U) : TRMyList[U] = {
@@ -55,7 +55,7 @@ sealed trait TRMyList[+T]{
       else Option( MyNode( fn(elem), accum ) )
     }
 
-    TRMyList(optionalNodeList)
+    TRMyList(optionalNodeList).reverse
   }
 
   def filter( fn : T => Boolean ) : TRMyList[T] = {
@@ -67,7 +67,7 @@ sealed trait TRMyList[+T]{
         accum
       }
     }
-   TRMyList( filteredNodes )
+   TRMyList( filteredNodes ).reverse
   }
 
   def distinct : TRMyList[T] = {
@@ -85,13 +85,32 @@ sealed trait TRMyList[+T]{
       }
     }
   }
-  def zip[U]( list : TRMyList[U]) : TRMyList[(T, U)] = {
-    val listTuplePair = foldLeft( (list.reverse.head, List.empty[ (T, U) ]) ) { ( accum, elem ) =>
-      accum._1.map { t =>
-        (t.nextNode, (elem, t.value) :: accum._2)
-      } getOrElse ((None, accum._2))
+  def zip[U]( theirs : TRMyList[U]) : TRMyList[(T, U)] = {
+    val minSize = Math.min( size, theirs.size )
+    if( minSize == 0 ) TRMyList.empty[(T,U)]
+    else{
+      val takeFromMine = take(minSize)
+      val takeFromTheirs = theirs.take(minSize)
+      
+      val listTuplePair = takeFromMine.foldLeft( ( takeFromTheirs.head, List.empty[ (T, U) ]) ) { ( accum, elem ) =>
+        accum._1.map { t =>
+          (t.nextNode, (elem, t.value) :: accum._2)
+        } getOrElse ((None, accum._2))
+      }
+      TRMyList(listTuplePair._2 :_*).reverse
     }
-    TRMyList(listTuplePair._2 :_*)
+  }
+
+  def take( number : Int ) : TRMyList[T]= {
+    val takeTuple = foldLeft( ( number, Option.empty[MyNode[T]] ) )( (accum, elem) =>{
+         if( accum._1 == 0 ){
+           ( (0, accum._2) )
+         }
+         else{
+           ( ( accum._1 -1, Option(MyNode(elem, accum._2 ) ) ) )
+         }
+    })
+    TRMyList(takeTuple._2).reverse
   }
 }
 
@@ -103,6 +122,7 @@ object TRMyList{
       revList.tail.foldLeft( MyNode(revList.head, None)){ (accum,elem) => MyNode(elem, Option(accum)) }
     }
   }
+  def empty[T]  : TRMyList[T] = new TRMyList[T] { val head = Option.empty[MyNode[T]]}
 }
 
 
