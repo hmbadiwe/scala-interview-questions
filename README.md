@@ -173,7 +173,9 @@ What makes a function pure? Give examples <br/>
 What is referential transparency? What are its benefits?
 *A function is pure if calling it with referential transparent arguments is also referential transparent.*<br/>
 *Referential transparency allows one to substitute a function with the value of the function's result in an application*<br/>
+
 Example:<br/>
+
 ```
     def refTranspFunc[T]( a : T, b : T, anotherReferentiallyTransparentFunction : (T,T)  => T ) = anotherReferentiallyTransparentFunction( a, b )
 ```
@@ -181,12 +183,15 @@ Example:<br/>
 ```
     refTranspFunc("My name ", "is Henry", (x:String,y:String) => (x+y )
 ```
+
 <br/>
 *In the above function, if a, b and anotherReferentiallyTransparentFunction are all referentially transparent,*</br>
 *refTranspFunc is also referentially transparent.* <br/>
 *Referentially Rransparency is achieved if the functions do not modify state outside their scope as well as enforcing immutability in data structures.*
 
-How does a functional program deal with side-effects? <br/>
+How does a functional program deal with side-effects?
+
+
 *A functional program should use immutable data structures. Instead of modifying data structures in place, new copies of data should be created.* <br/>
 *A common example of a side effect is logging or printing to the console.*<br/>
 *Scalaz provides an IO Monad that allows one to capture IO operations in an immutable data structure which is returned by the program.* <br/>
