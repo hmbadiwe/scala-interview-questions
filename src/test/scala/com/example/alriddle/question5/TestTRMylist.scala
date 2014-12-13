@@ -81,4 +81,11 @@ class TestTRMylist extends FlatSpec with ShouldMatchers {
     }
 
   }
+  it should "support the zip operation" in {
+    val nameYearsInLeagueTupleList = TRMyList("Johnny Football", "RG III", "Megatron", "Beast Mode")
+    val zippedNameYears = nameYearsInLeagueTupleList.zip( TRMyList(1,1,8,8) )
+    zippedNameYears.size shouldBe 4
+    zippedNameYears.toList should contain inOrderOnly (("Johnny Football", 1), ("RG III", 1), ("Megatron", 8), ("Beast Mode", 8))
+
+  }
 }

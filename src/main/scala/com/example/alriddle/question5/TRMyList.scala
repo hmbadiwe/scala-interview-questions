@@ -77,12 +77,27 @@ sealed trait TRMyList[+T]{
 
   def size : Int = foldLeft(0){(accum,elem) => accum + 1}
 
-  def groupBy[U]( fn : T => U ) : Map[U, TRMyList[T]] = ???
+  def groupBy[U]( fn : T => U ) : Map[U, TRMyList[T]] = {
+    foldLeft( Map.empty[U,TRMyList[T]]){ (accum,elem) =>
+      val key = fn(elem)
+      accum.get(key).map{ list => accum.updated(key,list.prepend(elem))} getOrElse {
+        accum + ( key -> TRMyList(elem) )
+      }
+    }
+  }
+  def zip[U]( list : TRMyList[U]) : TRMyList[(T, U)] = {
+    val listTuplePair = foldLeft( (list.reverse.head, List.empty[ (T, U) ]) ) { ( accum, elem ) =>
+      accum._1.map { t =>
+        (t.nextNode, (elem, t.value) :: accum._2)
+      } getOrElse ((None, accum._2))
+    }
+    TRMyList(listTuplePair._2 :_*)
+  }
 }
 
 object TRMyList{
   def apply[T]( n : Option[MyNode[T]]) : TRMyList[T] = new TRMyList[T] { val head = n}
-  def apply[T]( elem : T* ) : TRMyList[T]  =new TRMyList[T]{
+  def apply[T]( elem : T* ) : TRMyList[T]  = new TRMyList[T]{
     val head = Option {
       val revList = elem.toList.reverse
       revList.tail.foldLeft( MyNode(revList.head, None)){ (accum,elem) => MyNode(elem, Option(accum)) }
